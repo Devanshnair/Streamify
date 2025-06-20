@@ -1,0 +1,27 @@
+{
+  "name": "streamify",
+  "version": "1.0.0",
+  "description": "My first fullstack project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Devanshnair/Streamify.git"
+  },
+  "keywords": [
+    "FullStack",
+    "Backend",
+    "Streamify"
+  ],
+  "author": "Devansh Nair",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Devanshnair/Streamify/issues"
+  },
+  "homepage": "https://github.com/Devanshnair/Streamify#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
