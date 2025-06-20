@@ -2,6 +2,7 @@
   "name": "streamify",
   "version": "1.0.0",
   "description": "My first fullstack project",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js"
