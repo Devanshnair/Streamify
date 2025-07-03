@@ -5,12 +5,24 @@ import dotenv from "dotenv"
 // import mongoose from "mongoose";
 // import { DB_NAME } from "./constants";
 import { connectDB } from "./db/index.js";
+import { app } from "./app.js";
 
 dotenv.config({
     path: './env',
 })
 
-connectDB();
+connectDB()
+.then(()=>{
+    app.on("error", (err)=> {
+        console.log("Express could not connected to MongoDB")
+        if(err) throw err;
+    });
+    const port = process.env.PORT || 8000;
+    app.listen(process.env.PORT, ()=>{console.log(`Server listening on ${port}`)})
+})
+.catch((rej)=>{
+    console.log("MongoDB connection failed, Error: ", rej);
+})
 
 
 
@@ -19,18 +31,17 @@ connectDB();
 
 
 
-
-/*& 
+/** 
 This approach is not at all bad, but main index.js file is too cluttered.
 const app = express();
 
-//todo iffy's are generally started with a semicolon in proffesional codebases, the ';' acts as a cleanup for any 
-//todo prior statements that may cause error.
+*todo iffy's are generally started with a semicolon in proffesional codebases, the ';' acts as a cleanup for any 
+*todo prior statements that may cause error.
 ;(async () => {
     try{
         const connectionInstance = await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`)
         console.log("MongoDB connected! DB Host: ${connectionInstance.connection.host}")
-        //todo sometimes express encounters errors while connecting to db, but it is not a mongodb error. They are handled as:
+        *todo sometimes express encounters errors while connecting to db, but it is not a mongodb error. They are handled as:
         app.on("error", (err) => {
             console.log("Error: Express could not connect to db", err)
         })
