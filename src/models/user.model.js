@@ -50,12 +50,15 @@ const userSchema = new Schema({
     }
 }, {timestamps: true})
 
+// Pre-save hook: password hashing. 'pre' is a mongoose middleware function that run before a certain action is executed.
+// Hashing is done only for new passwords or when passwords are updated
 userSchema.pre('save', async function(next){
     if(!this.isModified("password")) return next()
     this.password = await bcrypt.hash(this.password, 10)
     next();
 })
 
+// userSchema.methods are instance methods and have acces to individual instances
 userSchema.methods.isPasswordCorrect = async function(password){
     return await bcrypt.compare(password, this.password)
 }
