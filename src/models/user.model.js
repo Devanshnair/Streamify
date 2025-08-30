@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 
-avatardefault = "" // import from cloudinary
+const avatardefault = "" // import from cloudinary
 
 const userSchema = new Schema({
     username: {

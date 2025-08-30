@@ -14,20 +14,19 @@ const registerUser = asyncHandler( async (req, res) => {
     // 7. Check for user creation
     // 8. return res
 
-    const { username, fullname, email, password } = req.body
+    const { username, fullName, email, password } = req.body;
     console.log("email: ", email);
 
     // 1. Validate incoming request data (e.g., username, email, password)
     if ([username, email, fullName, password].some((field) => field?.trim() === "")){
         throw new ApiError(400, "All field are required!")
     }
-    })
 
     // 2. Check if a user already exists (same email or username)
     const userExists = User.findOne({
         $or: [{email}, {username}]
     })
-    console.log("userExiss: ", userExists)
+    console.log("userExists: ", userExists)
     if(userExists){
         throw new ApiError(409, "User with same email or username already exists");
     }
@@ -37,7 +36,7 @@ const registerUser = asyncHandler( async (req, res) => {
     // Like req.body, multer provides access to req.files()
     const avatarLocalFilePath = req.files?.avatar[0]?.path;
     const coverImageLocalFilePath = req.files?.coverImage[0]?.path;
-    console.log("req.files(): ", req.files)
+    console.log("req.files: ", req.files)
 
     if(!avatarLocalFilePath){
         throw new ApiError(400, "Avatar File is required!")
@@ -62,8 +61,10 @@ const registerUser = asyncHandler( async (req, res) => {
         coverImage: coverImage?.url || "", // We never checked coverImage existed or not, therefore we check here
     })
 
-    // 6. Remove password and refresh token field from response
+    // 5. Generate authentication tokens (access & refresh)
 
+
+    // 6. Remove password and refresh token field from response
     // .select() removes the fields that are selected. weird syntax
     const createdUser = await User.findById(user?._id).select(
         "-password -refreshToken"
@@ -78,6 +79,7 @@ const registerUser = asyncHandler( async (req, res) => {
     return res.status(201).json(
         new ApiResponse(200, createdUser, "User registered successfully!")
     )
+})
 
 
-export {registerUser}
+export { registerUser }
